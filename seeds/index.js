@@ -22,16 +22,26 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const price  = Math.floor(Math.random()*20)+10;
         const camp = new Campground({
+            author: '649b097ab81ae2726b2c82b3',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80',
             description: "lorum upasom ",
             price : price,
-
+            images: [
+                {
+                  url: 'https://res.cloudinary.com/duhpkjgbv/image/upload/v1687982944/CampHub/yzov9qsl8mpawtvtlc3u.jpg',
+                  filename: 'CampHub/yzov9qsl8mpawtvtlc3u',
+                },
+                {
+                  url: 'https://res.cloudinary.com/duhpkjgbv/image/upload/v1687982955/CampHub/cfgxlcdebbkeoawr5xys.jpg',
+                  filename: 'CampHub/cfgxlcdebbkeoawr5xys',   
+                }
+              ]
         })
         await camp.save();
     }
 }
+
 
 seedDB().then(() => {
     mongoose.connection.close();

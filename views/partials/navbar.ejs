@@ -1,4 +1,4 @@
-
+<!-- 
 <nav class="navbar bg-dark sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">YelpCamp</a>
@@ -6,17 +6,52 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/campgrounds">Campgrounds</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ">
             <a class="nav-link" href="/campgrounds/new">new campground</a>
           </li>
         </ul>
+        <div class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+          <div class="nav-item">
+            <a class="nav-link " href="/login">login</a>
+         >
+            <a class="nav-link" href="/register">Register</a>
+         
+            <a class="nav-link" href="/logout">logout</a>
+          </div>
+        </div>
       </div>
     </div>
+  </nav> -->
+  <!-- "navbar bg-dark sticky-top navbar-expand-lg bg-body-tertiary" -->
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Camp-Hub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarNavAltMarkup" 
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link"  href="/">Home</a>
+          <a class="nav-link" href="/campgrounds">campgrounds</a>
+          <a class="nav-link" href="/campgrounds/new">add new campground</a>
+        </div>
+      </div>
+      <div class="navbar-nav ml-auto">
+        <% if(!correntUser) {%>
+        <a class="nav-link " href="/login">login</a>
+        <a class="nav-link" href="/register">Register</a>
+        <% }else{ %>
+        <a class="nav-link" href="/logout">logout</a>
+        <% } %>
+    </div>
+    </div>
   </nav>
+ 

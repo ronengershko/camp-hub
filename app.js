@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const app = express(); 
@@ -9,9 +13,14 @@ const ExpressError = require('./utils/ExpressError');
 const joi = require('joi');
 const session = require('express-session'); 
 const flash = require('connect-flash'); 
+const User = require('./models/user');
 
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
+const passport = require('passport');
+const localStrategy = require('passport-local'); 
+
+const campgroundsRoutes = require('./routes/campgrounds');
+const reviewsRoutes = require('./routes/reviews');
+const usersRoutes = require('./routes/user')
 
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp' ,{
     useNewUrlParser: true,
@@ -24,16 +33,17 @@ mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp' ,{
     console.log(err); 
  })
 
-
+app.use(express.static('public'));
 app.set('view engine', 'ejs'); 
 app.set('views', path.join(__dirname,'views'));
 
 app.engine('ejs',ejsMate);
 app.use(express.urlencoded({extended: true})); 
 app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname,'public')));
+//app.use(express.static(path.join(__dirname,'public')));
 
 app.use(flash());
+
 const sessionConfig = {
     secret: 'password',
     resave: false,
@@ -45,19 +55,38 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig)); 
-app.use('/campgrounds',campgrounds);
-app.use('/campgrounds/:id/reviews/',reviews); 
+
+app.use(passport.initialize());
+app.use(passport.session()); 
+
+passport.use(new localStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.use((req,res,next)=>{
-    res.locals.success = req.flash('success');
-    next();
+   res.locals.correntUser = req.user;
+   res.locals.success = req.flash('success'); 
+   res.locals.error = req.flash('error'); 
+   next();
 })
+//app.use('/',usersRoutes); 
+app.use('/campgrounds',campgroundsRoutes);
+app.use('/campgrounds/:id/reviews/',reviewsRoutes); 
+app.use('/',usersRoutes); 
+
+// app.use((req,res,next)=>{
+//     res.locals.success = req.flash('success');
+//     next();
+// })
 app.get('/', (req,res)=>{
     console.log("1");
     res.render('home');  
 })
 
-//app.use(flash()); 
+
+
+ 
 app.all('*',(req,res,next)=>{
     next(new ExpressError('page not founddddd', 404));
 })
